@@ -1,0 +1,3 @@
+@if (auth.currentUser(); as user) {
+  <p>Welcome, {{ user.displayName || user.username }}!</p>
+}

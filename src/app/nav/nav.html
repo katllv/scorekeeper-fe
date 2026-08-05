@@ -1,0 +1,10 @@
+@if (auth.currentUser(); as user) {
+  <nav>
+    <a [routerLink]="['/']" class="brand">Scorekeeper</a>
+
+    <div class="nav-right">
+      <span>{{ user.displayName || user.username }}</span>
+      <button type="button" class="primary" (click)="onLogout()">Log out</button>
+    </div>
+  </nav>
+}

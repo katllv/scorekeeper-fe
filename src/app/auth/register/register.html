@@ -1,0 +1,20 @@
+<form (submit)="$event.preventDefault(); onSubmit()">
+  <label for="username">Username</label>
+  <input id="username" [formField]="registerForm.username" />
+  @if (registerForm.username().touched() && registerForm.username().errors().length) {
+    <span>{{ registerForm.username().errors()[0].message }}</span>
+  }
+
+  <label for="password">Password</label>
+  <input id="password" type="password" [formField]="registerForm.password" />
+  @if (registerForm.password().touched() && registerForm.password().errors().length) {
+    <span>{{ registerForm.password().errors()[0].message }}</span>
+  }
+
+  <label for="display-name">Display Name (optional)</label>
+  <input id="display-name" [formField]="registerForm.displayName" />
+
+  <button type="submit" class="primary" [disabled]="registerForm().invalid()">Register</button>
+</form>
+
+<a [routerLink]="['/login']">Already have an account? Log in</a>
