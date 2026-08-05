@@ -1,0 +1,50 @@
+<h3>Players</h3>
+<div class="player-search">
+  <input
+    placeholder="Search by username..."
+    [value]="newPlayerUsername()"
+    (input)="newPlayerUsername.set($any($event.target).value)"
+  />
+
+  @if (searchResults().length > 0) {
+    <ul class="search-dropdown">
+      @for (user of searchResults(); track user.id) {
+        <li>
+          <button type="button" (click)="addPlayer(user.username)">
+            {{ user.displayName || user.username }} ({{ user.username }})
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</div>
+
+<ul>
+  @for (username of players(); track username) {
+    <li>
+      {{ username }}
+      <button type="button" (click)="removePlayer(username)">Remove</button>
+    </li>
+  }
+</ul>
+
+<form (submit)="$event.preventDefault(); onStartGame()">
+  <h3>Settings</h3>
+
+  <label for="target-score">Target score</label>
+  <input id="target-score" type="number" [formField]="createForm.targetScore" />
+  @if (createForm.targetScore().touched() && createForm.targetScore().errors().length) {
+    <span>{{ createForm.targetScore().errors()[0].message }}</span>
+  }
+
+  <label for="round-offset">Round offset</label>
+  <input id="round-offset" type="number" [formField]="createForm.roundOffset" />
+
+  <label for="starter-rule">Who starts the next round</label>
+  <select id="starter-rule" [formField]="createForm.starterRule">
+    <option value="WINNER_STARTS">Round winner starts</option>
+    <option value="LOSER_STARTS">Round loser starts</option>
+  </select>
+
+  <button type="submit" class="primary" [disabled]="createForm().invalid()">Start game</button>
+</form>

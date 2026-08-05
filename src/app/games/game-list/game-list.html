@@ -1,0 +1,18 @@
+<a [routerLink]="['/games/new']" class="primary">New game</a>
+
+@if (games().length === 0) {
+  <p>No games yet.</p>
+} @else {
+  <ul>
+    @for (game of games(); track game.id) {
+      <li>
+        <a [routerLink]="['/games', game.id]">
+          Game from {{ game.createdAt | date: 'medium' }} — {{ game.status }}
+          @if (game.winnerUsername) {
+            (winner: {{ game.winnerUsername }})
+          }
+        </a>
+      </li>
+    }
+  </ul>
+}

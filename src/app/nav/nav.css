@@ -12,6 +12,7 @@ nav {
   color: var(--primary-color);
 }
 
+.nav-left,
 .nav-right {
   display: flex;
   align-items: center;

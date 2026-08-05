@@ -1,0 +1,22 @@
+<table>
+  <thead>
+    <tr>
+      <th>Player</th>
+      <th>Games won</th>
+      <th>Games played</th>
+      <th>Total points</th>
+      <th>Times knocked</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (entry of entries(); track entry.userId) {
+      <tr>
+        <td>{{ entry.displayName || entry.username }}</td>
+        <td>{{ entry.gamesWon }}</td>
+        <td>{{ entry.gamesPlayed }}</td>
+        <td>{{ entry.totalPoints }}</td>
+        <td>{{ entry.timesKnocked }}</td>
+      </tr>
+    }
+  </tbody>
+</table>

@@ -1,0 +1,63 @@
+@if (game(); as g) {
+  <h2>{{ g.status }} — target {{ g.targetScore }}</h2>
+  @if (g.winnerUsername) {
+    <p>Winner: {{ g.winnerUsername }}</p>
+  }
+
+  <h3>Players</h3>
+  <ul>
+    @for (player of g.players; track player.id) {
+      <li>
+        {{ player.displayName || player.username }}: {{ player.totalPoints }}
+        @if (player.id === g.nextStarterGamePlayerId) {
+          (starts next round)
+        }
+      </li>
+    }
+  </ul>
+
+  @if (g.status === 'ACTIVE') {
+    <h3>Add player</h3>
+    <form (submit)="$event.preventDefault(); onAddPlayer()">
+      <input [formField]="addPlayerForm.username" placeholder="Username" />
+      @if (addPlayerForm.username().touched() && addPlayerForm.username().errors().length) {
+        <span>{{ addPlayerForm.username().errors()[0].message }}</span>
+      }
+      <button type="submit" [disabled]="addPlayerForm().invalid()">Add player</button>
+    </form>
+
+    <h3>Submit round</h3>
+    <form (submit)="$event.preventDefault(); onSubmitRound()">
+      @for (player of g.players; track player.id) {
+        <label [for]="'score-' + player.id">{{ player.displayName || player.username }}</label>
+        <input
+          [id]="'score-' + player.id"
+          type="number"
+          (input)="updateScore(player.id, $any($event.target).value)"
+        />
+      }
+
+      <label for="knocked-by">Who knocked</label>
+      <select id="knocked-by" [value]="knockedBy()" (change)="knockedBy.set($any($event.target).value)">
+        <option value="">No one</option>
+        @for (player of g.players; track player.id) {
+          <option [value]="player.id">{{ player.displayName || player.username }}</option>
+        }
+      </select>
+
+      <button type="submit" class="primary">Submit round</button>
+    </form>
+  }
+
+  <h3>Rounds</h3>
+  @for (round of g.rounds; track round.id) {
+    <div>
+      <strong>Round {{ round.roundNumber }}</strong>
+      <ul>
+        @for (score of round.scores; track score.gamePlayerId) {
+          <li>{{ score.gamePlayerId }}: {{ score.points }}</li>
+        }
+      </ul>
+    </div>
+  }
+}
