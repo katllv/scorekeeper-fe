@@ -1,17 +1,17 @@
 <form (submit)="$event.preventDefault(); onSubmit()">
-  <label for="username">Username</label>
+  <label for="username">Brugernavn</label>
   <input id="username" [formField]="loginForm.username" />
   @if (loginForm.username().touched() && loginForm.username().errors().length) {
     <span>{{ loginForm.username().errors()[0].message }}</span>
   }
 
-  <label for="password">Password</label>
+  <label for="password">Adgangskode</label>
   <input id="password" type="password" [formField]="loginForm.password" />
   @if (loginForm.password().touched() && loginForm.password().errors().length) {
     <span>{{ loginForm.password().errors()[0].message }}</span>
   }
 
-  <button type="submit" class="primary" [disabled]="loginForm().invalid()">Log in</button>
+  <button type="submit" class="primary" [disabled]="loginForm().invalid()">Log ind</button>
 </form>
 
-<a [routerLink]="['/register']">Don't have an account? Register</a>
+<a [routerLink]="['/register']">Har du ikke en konto? Opret dig</a>

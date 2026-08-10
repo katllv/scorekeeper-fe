@@ -1,15 +1,14 @@
 @if (auth.currentUser(); as user) {
   <nav>
     <div class="nav-left">
-      <a [routerLink]="['/']" class="brand">Scorekeeper</a>
-      <a [routerLink]="['/games/new']">Nyt spil</a>
-      <a [routerLink]="['/games']">Historik</a>
+      <a [routerLink]="['/']" class="brand">🎴 Scorekeeper</a>
+      <a [routerLink]="['/']">Spil</a>
       <a [routerLink]="['/leaderboard']">Rangliste</a>
     </div>
 
     <div class="nav-right">
       <span>{{ user.displayName || user.username }}</span>
-      <button type="button" class="primary" (click)="onLogout()">Log out</button>
+      <button type="button" class="primary" (click)="onLogout()">Log ud</button>
     </div>
   </nav>
 }

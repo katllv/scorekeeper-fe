@@ -16,8 +16,8 @@ export class Login {
   protected readonly model = signal({ username: '', password: '' });
 
   protected readonly loginForm = form(this.model, (s) => {
-    required(s.username, { message: 'Username is required' });
-    required(s.password, { message: 'Password is required' });
+    required(s.username, { message: 'Brugernavn er påkrævet' });
+    required(s.password, { message: 'Adgangskode er påkrævet' });
   });
 
   protected onSubmit() {

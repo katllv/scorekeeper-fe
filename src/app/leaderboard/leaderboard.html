@@ -1,22 +1,33 @@
-<table>
-  <thead>
-    <tr>
-      <th>Player</th>
-      <th>Games won</th>
-      <th>Games played</th>
-      <th>Total points</th>
-      <th>Times knocked</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (entry of entries(); track entry.userId) {
+@if (loading()) {
+  <div class="spinner-container"><div class="spinner"></div></div>
+} @else {
+<div class="table-wrap">
+  <table>
+    <thead>
       <tr>
-        <td>{{ entry.displayName || entry.username }}</td>
-        <td>{{ entry.gamesWon }}</td>
-        <td>{{ entry.gamesPlayed }}</td>
-        <td>{{ entry.totalPoints }}</td>
-        <td>{{ entry.timesKnocked }}</td>
+        <th>Spiller</th>
+        <th>Vundne spil</th>
+        <th>Spillede spil</th>
+        <th>Point i alt</th>
+        <th>Antal bank</th>
       </tr>
-    }
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      @for (entry of entries(); track entry.userId) {
+        <tr>
+          <td class="player-cell">
+            <span class="avatar" [style.background]="avatarColor(entry.username)">
+              {{ avatarInitial(entry.displayName || entry.username) }}
+            </span>
+            {{ entry.displayName || entry.username }}
+          </td>
+          <td>{{ entry.gamesWon }}</td>
+          <td>{{ entry.gamesPlayed }}</td>
+          <td>{{ entry.totalPoints }}</td>
+          <td>{{ entry.timesKnocked }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+}

@@ -1,33 +1,19 @@
-@if (game(); as g) {
-  <h2>{{ g.status }} — target {{ g.targetScore }}</h2>
-  @if (g.winnerUsername) {
-    <p>Winner: {{ g.winnerUsername }}</p>
-  }
+<a [routerLink]="['/']" class="back-link">← Tilbage til spil</a>
 
-  <h3>Players</h3>
-  <ul>
-    @for (player of g.players; track player.id) {
-      <li>
-        {{ player.displayName || player.username }}: {{ player.totalPoints }}
-        @if (player.id === g.nextStarterGamePlayerId) {
-          (starts next round)
-        }
-      </li>
+@if (loading()) {
+  <div class="spinner-container"><div class="spinner"></div></div>
+} @else if (game(); as g) {
+  <div class="game-header">
+    <span class="status-badge" [class.finished]="g.status === 'FINISHED'">{{ statusLabel(g.status) }}</span>
+    <span class="target">Mål: {{ g.targetScore }}</span>
+    @if (g.winnerUsername) {
+      <span class="winner">🏆 {{ g.winnerUsername }}</span>
     }
-  </ul>
+  </div>
 
   @if (g.status === 'ACTIVE') {
-    <h3>Add player</h3>
-    <form (submit)="$event.preventDefault(); onAddPlayer()">
-      <input [formField]="addPlayerForm.username" placeholder="Username" />
-      @if (addPlayerForm.username().touched() && addPlayerForm.username().errors().length) {
-        <span>{{ addPlayerForm.username().errors()[0].message }}</span>
-      }
-      <button type="submit" [disabled]="addPlayerForm().invalid()">Add player</button>
-    </form>
-
-    <h3>Submit round</h3>
-    <form (submit)="$event.preventDefault(); onSubmitRound()">
+    <h3>Indtast runde</h3>
+    <form class="card" (submit)="$event.preventDefault(); onSubmitRound()">
       @for (player of g.players; track player.id) {
         <label [for]="'score-' + player.id">{{ player.displayName || player.username }}</label>
         <input
@@ -37,27 +23,51 @@
         />
       }
 
-      <label for="knocked-by">Who knocked</label>
-      <select id="knocked-by" [value]="knockedBy()" (change)="knockedBy.set($any($event.target).value)">
-        <option value="">No one</option>
+      <label>Hvem bankede</label>
+      <div class="knock-grid">
         @for (player of g.players; track player.id) {
-          <option [value]="player.id">{{ player.displayName || player.username }}</option>
+          <button
+            type="button"
+            class="knock-option"
+            [class.selected]="knockedBy() === player.id"
+            (click)="selectKnockedBy(player.id)"
+          >
+            {{ player.displayName || player.username }}
+          </button>
         }
-      </select>
+      </div>
 
-      <button type="submit" class="primary">Submit round</button>
+      <button type="submit" class="primary" [disabled]="!knockedBy()">Gem runde</button>
     </form>
   }
 
-  <h3>Rounds</h3>
-  @for (round of g.rounds; track round.id) {
-    <div>
-      <strong>Round {{ round.roundNumber }}</strong>
-      <ul>
-        @for (score of round.scores; track score.gamePlayerId) {
-          <li>{{ score.gamePlayerId }}: {{ score.points }}</li>
+  <h3>Stilling</h3>
+  <ul class="player-list">
+    @for (player of g.players; track player.id) {
+      <li class="player-row" [class.starter]="player.id === g.nextStarterGamePlayerId">
+        <span class="avatar" [style.background]="avatarColor(player.username)">
+          {{ avatarInitial(player.displayName || player.username) }}
+        </span>
+        <span class="player-name">{{ player.displayName || player.username }}</span>
+        @if (player.id === g.nextStarterGamePlayerId) {
+          <span class="starter-tag">starter næste runde</span>
         }
-      </ul>
-    </div>
-  }
+        <span class="player-total">{{ player.totalPoints }}</span>
+      </li>
+    }
+  </ul>
+
+  <h3>Runder</h3>
+  <div class="rounds">
+    @for (round of reversedRounds(); track round.id) {
+      <div class="round-card">
+        <strong>Runde {{ round.roundNumber }}</strong>
+        <ul>
+          @for (score of round.scores; track score.gamePlayerId) {
+            <li>{{ playerName(score.gamePlayerId) }}: {{ score.points }}</li>
+          }
+        </ul>
+      </div>
+    }
+  </div>
 }

@@ -1,5 +1,0 @@
-@if (auth.currentUser(); as user) {
-  <p>Welcome, {{ user.displayName || user.username }}!</p>
-  <a [routerLink]="['/games']">View your games</a>
-  <a [routerLink]="['/leaderboard']">Leaderboard</a>
-}

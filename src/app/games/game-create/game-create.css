@@ -1,6 +1,11 @@
+:host {
+  display: block;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
 .player-search {
   position: relative;
-  max-width: 300px;
 }
 
 .search-dropdown {
@@ -9,13 +14,12 @@
   left: 0;
   right: 0;
   z-index: 10;
-  background: white;
-  border: solid 1px var(--shadow-color);
-  border-radius: 8px;
-  margin: 4px 0 0;
-  padding: 4px;
-  list-style: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--color-surface);
+  border: solid 1px var(--color-border);
+  border-radius: var(--radius-md);
+  margin: var(--space-1) 0 0;
+  padding: var(--space-1);
+  box-shadow: var(--shadow-md);
 }
 
 .search-dropdown li button {
@@ -23,10 +27,97 @@
   text-align: left;
   background: none;
   border: none;
-  padding: 8px;
-  cursor: pointer;
+  padding: var(--space-2) var(--space-3);
 }
 
 .search-dropdown li button:hover {
   background: var(--accent-color);
+}
+
+.player-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 6px 8px 6px 14px;
+  background: var(--accent-color);
+  color: var(--primary-color);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.chip button {
+  border: none;
+  background: none;
+  color: var(--primary-color);
+  padding: 0 4px;
+  line-height: 1;
+  font-size: 1rem;
+}
+
+.chip button:hover {
+  background: none;
+  color: var(--color-danger);
+}
+
+form {
+  background: var(--color-surface);
+  border: solid 1px var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-5);
+}
+
+button[type='submit'] {
+  width: 100%;
+  margin-top: var(--space-5);
+}
+
+.hint {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.preset-grid {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.preset-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: var(--space-3) var(--space-4);
+  min-height: unset;
+  background: var(--color-surface);
+  border: solid 1px var(--color-border);
+  text-align: left;
+}
+
+.preset-option strong {
+  font-size: 0.95rem;
+}
+
+.preset-option span {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.preset-option.selected {
+  background: var(--accent-color);
+  border-color: var(--primary-color);
+}
+
+.preset-option.selected strong {
+  color: var(--primary-color);
 }

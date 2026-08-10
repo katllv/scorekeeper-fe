@@ -1,0 +1,43 @@
+:host {
+  display: block;
+}
+
+a.primary {
+  margin-bottom: var(--space-5);
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+li a {
+  display: block;
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: solid 1px var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  box-shadow: var(--shadow-sm);
+  transition:
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+li a:hover {
+  border-color: var(--secondary-color);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.empty-state {
+  padding: var(--space-6) var(--space-4);
+  text-align: center;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border: dashed 1px var(--color-border);
+  border-radius: var(--radius-lg);
+}

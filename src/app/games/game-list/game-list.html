@@ -1,15 +1,19 @@
-<a [routerLink]="['/games/new']" class="primary">New game</a>
+<a [routerLink]="['/games/new']" class="primary">Nyt spil</a>
 
-@if (games().length === 0) {
-  <p>No games yet.</p>
+@if (loading()) {
+  <div class="spinner-container"><div class="spinner"></div></div>
+} @else if (games().length === 0) {
+  <div class="empty-state">
+    <p>Ingen spil endnu — start dit første spil ovenfor 🎴</p>
+  </div>
 } @else {
   <ul>
     @for (game of games(); track game.id) {
       <li>
         <a [routerLink]="['/games', game.id]">
-          Game from {{ game.createdAt | date: 'medium' }} — {{ game.status }}
+          Spil fra {{ game.createdAt | date: 'medium' }} — {{ statusLabel(game.status) }}
           @if (game.winnerUsername) {
-            (winner: {{ game.winnerUsername }})
+            (vinder: {{ game.winnerUsername }})
           }
         </a>
       </li>

@@ -16,10 +16,10 @@ export class Register {
   protected readonly model = signal({ username: '', password: '', displayName: '' });
 
   protected readonly registerForm = form(this.model, (s) => {
-    required(s.username, { message: 'Username is required' });
-    minLength(s.username, 2, { message: 'Username must be at least 2 characters' });
-    required(s.password, { message: 'Password is required' });
-    minLength(s.password, 3, { message: 'Password must be at least 3 characters' });
+    required(s.username, { message: 'Brugernavn er påkrævet' });
+    minLength(s.username, 2, { message: 'Brugernavn skal være mindst 2 tegn' });
+    required(s.password, { message: 'Adgangskode er påkrævet' });
+    minLength(s.password, 3, { message: 'Adgangskode skal være mindst 3 tegn' });
   });
 
   protected onSubmit() {

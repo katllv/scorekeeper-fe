@@ -1,9 +1,12 @@
-<h3>Players</h3>
-<div class="player-search">
+<a [routerLink]="['/']" class="back-link">← Tilbage til spil</a>
+
+<h3>Spillere</h3>
+<div class="player-search" (click)="$event.stopPropagation()">
   <input
-    placeholder="Search by username..."
+    placeholder="Søg efter brugernavn..."
     [value]="newPlayerUsername()"
     (input)="newPlayerUsername.set($any($event.target).value)"
+    (focus)="onSearchFocus()"
   />
 
   @if (searchResults().length > 0) {
@@ -19,32 +22,91 @@
   }
 </div>
 
-<ul>
+<ul class="player-chips">
   @for (username of players(); track username) {
-    <li>
+    <li class="chip">
       {{ username }}
-      <button type="button" (click)="removePlayer(username)">Remove</button>
+      <button type="button" (click)="removePlayer(username)" aria-label="Fjern spiller">×</button>
     </li>
   }
 </ul>
 
 <form (submit)="$event.preventDefault(); onStartGame()">
-  <h3>Settings</h3>
+  <h3>Indstillinger</h3>
 
-  <label for="target-score">Target score</label>
-  <input id="target-score" type="number" [formField]="createForm.targetScore" />
-  @if (createForm.targetScore().touched() && createForm.targetScore().errors().length) {
-    <span>{{ createForm.targetScore().errors()[0].message }}</span>
+  <label>Spiltype</label>
+  <div class="preset-grid">
+    <button
+      type="button"
+      class="preset-option"
+      [class.selected]="preset() === 'LOSER'"
+      (click)="selectPreset('LOSER')"
+    >
+      <strong>Taber-spil</strong>
+      <span>Op til 100 point — lavest vinder</span>
+    </button>
+    <button
+      type="button"
+      class="preset-option"
+      [class.selected]="preset() === 'WINNER'"
+      (click)="selectPreset('WINNER')"
+    >
+      <strong>Vinder-spil</strong>
+      <span>Ned til -100 point — lavest vinder, -10/runde</span>
+    </button>
+    <button
+      type="button"
+      class="preset-option"
+      [class.selected]="preset() === 'POINTS'"
+      (click)="selectPreset('POINTS')"
+    >
+      <strong>Pointspil</strong>
+      <span>Vinderen af runden får flest point, op til 20 point</span>
+    </button>
+    <button
+      type="button"
+      class="preset-option"
+      [class.selected]="preset() === 'CUSTOM'"
+      (click)="selectPreset('CUSTOM')"
+    >
+      <strong>Tilpasset</strong>
+      <span>Vælg dine egne tal</span>
+    </button>
+  </div>
+
+  @if (preset() === 'POINTS') {
+    <p class="hint">
+      Hver runde rangeres spillerne efter deres korttotal — lavest total giver flest point.
+      Ved {{ players().length + 1 }} spillere får 1.-pladsen {{ players().length + 1 }} point,
+      sidstepladsen får 1 point. Første spiller til 20 point vinder.
+    </p>
   }
 
-  <label for="round-offset">Round offset</label>
-  <input id="round-offset" type="number" [formField]="createForm.roundOffset" />
+  @if (preset() === 'CUSTOM') {
+    <label for="target-score">Spil indtil score når</label>
+    <input id="target-score" type="number" [formField]="createForm.targetScore" />
+    <p class="hint">
+      Spillet slutter, når nogen når eller passerer denne score. Brug et negativt tal til et spil,
+      der tæller ned.
+    </p>
+    @if (createForm.targetScore().touched() && createForm.targetScore().errors().length) {
+      <span>{{ createForm.targetScore().errors()[0].message }}</span>
+    }
 
-  <label for="starter-rule">Who starts the next round</label>
+    <label for="round-offset">Score-justering pr. runde</label>
+    <input id="round-offset" type="number" [formField]="createForm.roundOffset" />
+    <p class="hint">
+      F.eks. -10 betyder, at alles korttotal reduceres med 10 hver runde. Lad stå på 0 for ingen
+      justering.
+    </p>
+  }
+
+  <label for="starter-rule">Hvem starter næste runde</label>
   <select id="starter-rule" [formField]="createForm.starterRule">
-    <option value="WINNER_STARTS">Round winner starts</option>
-    <option value="LOSER_STARTS">Round loser starts</option>
+    <option value="WINNER_STARTS">Rundens vinder starter</option>
+    <option value="LOSER_STARTS">Rundens taber starter</option>
   </select>
+  <p class="hint">Afgør hvem der spiller først i den følgende runde, baseret på rundens scorer.</p>
 
-  <button type="submit" class="primary" [disabled]="createForm().invalid()">Start game</button>
+  <button type="submit" class="primary" [disabled]="createForm().invalid()">Start spil</button>
 </form>

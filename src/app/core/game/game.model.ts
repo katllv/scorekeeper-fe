@@ -1,19 +1,22 @@
 export type GameStatus = 'ACTIVE' | 'FINISHED';
 export type StarterRule = 'WINNER_STARTS' | 'LOSER_STARTS';
+export type ScoringMode = 'CARD_TOTAL' | 'PLACEMENT';
+
+export function gameStatusLabel(status: GameStatus): string {
+  return status === 'ACTIVE' ? 'I gang' : 'Afsluttet';
+}
 
 export interface CreateGameRequest {
   targetScore: number;
   roundOffset: number;
   starterRule: StarterRule;
-}
-
-export interface AddPlayerRequest {
-  username: string;
+  scoringMode: ScoringMode;
+  playerUsernames: string[];
 }
 
 export interface SubmitRoundRequest {
   rawScores: Record<string, number>;
-  knockedByGamePlayerId?: string | null;
+  knockedByGamePlayerId: string;
 }
 
 export interface GamePlayerResponse {
@@ -45,6 +48,7 @@ export interface GameResponse {
   targetScore: number;
   roundOffset: number;
   starterRule: StarterRule;
+  scoringMode: ScoringMode;
   winnerId?: string | null;
   winnerUsername?: string | null;
   players: GamePlayerResponse[];

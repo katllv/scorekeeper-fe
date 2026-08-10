@@ -1,0 +1,38 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: var(--space-6);
+}
+
+form {
+  width: 100%;
+  max-width: 340px;
+  background: var(--color-surface);
+  border: solid 1px var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-5);
+}
+
+button[type='submit'] {
+  width: 100%;
+  margin-top: var(--space-5);
+}
+
+span {
+  display: block;
+  color: var(--color-danger);
+  font-size: 0.8rem;
+  margin-top: -6px;
+  margin-bottom: var(--space-2);
+}
+
+a {
+  display: block;
+  width: 100%;
+  max-width: 340px;
+  text-align: center;
+  margin-top: var(--space-4);
+  font-size: 0.9rem;
+}
